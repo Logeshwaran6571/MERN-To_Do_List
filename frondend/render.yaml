@@ -1,0 +1,4 @@
+  - type: static
+    name: mern-frontend
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
