@@ -9,39 +9,42 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// ✅ CORS setup to allow frontend access
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000', 'https://mern-to-do-list-frondend.onrender.com'],
+  origin: [
+    'http://localhost:5173',              // Vite dev
+    'http://localhost:3000',              // Create React App dev
+    'https://mern-to-do-list-frondend.onrender.com' // Render frontend
+  ],
   credentials: true
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+// ✅ API route prefix
 app.use('/api/todos', todoRoutes);
 
-// Health check endpoint
+// ✅ Health check route
 app.get('/api/health', (req, res) => {
-  res.json({ message: 'Server is running successfully!', timestamp: new Date().toISOString() });
+  res.json({ message: 'Server is running', timestamp: new Date().toISOString() });
 });
 
-// MongoDB Connection
+// ✅ Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => {
-  console.log('✅ Connected to MongoDB Atlas');
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-  });
+  console.log('✅ Connected to MongoDB');
+  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 })
-.catch((error) => {
-  console.error('❌ MongoDB connection error:', error);
+.catch((err) => {
+  console.error('❌ MongoDB connection failed:', err);
   process.exit(1);
 });
 
-// Error handling middleware
+// Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Something went wrong!' });
