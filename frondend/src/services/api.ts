@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://mern-to-do-list-backend-mu4w.onrender.com/api';
+const API_BASE_URL = 'https://mern-to-do-list-backend-mu4w.onrender.com';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
